@@ -15,9 +15,9 @@ const App = () => {
     async function getQuestion() {
       const res = await fetch('https://opentdb.com/api.php?amount=5&category=18&encode=base64')
       const data = await res.json()
-      let q = []
+      const receivedQuestion = []
       data.results.forEach(question => {
-        q.push(
+        receivedQuestion.push(
           {
             id: nanoid(),
             question: question.question,
@@ -27,7 +27,7 @@ const App = () => {
             answers: shuffleArray([...question.incorrect_answers, question.correct_answer])
           })
       })
-      setQuestions(q)
+      setQuestions(receivedQuestion)
     }
     getQuestion()
   }, [count])
@@ -35,7 +35,7 @@ const App = () => {
   const handleCheck = () => {
     let selected = true
     questions.forEach(question => {
-      if (question.selected == null) {
+      if (question.selected === null) {
         selected = false
         return
       }
@@ -70,7 +70,7 @@ const App = () => {
     return (
       <Question
         key={question.id}
-        q={question}
+        receivedQuestion={question}
         handleClickAnswer={handleClickAnswer}
         id={question.id}
       />

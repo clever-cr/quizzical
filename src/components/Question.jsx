@@ -1,22 +1,22 @@
 import { nanoid } from "nanoid";
 
-const Question = ({ q, handleClickAnswer }) => {
-  let answers = q.answers;
+const Question = ({ receivedQuestion, handleClickAnswer }) => {
+  const answers = receivedQuestion.answers;
 
   const handleClick = (answer) => {
     console.log("check");
-    if (q.checked) {
+    if (receivedQuestion.checked) {
       return;
     }
-    handleClickAnswer(q.id, answer);
+    handleClickAnswer(receivedQuestion.id, answer);
   };
 
   const answersElement = answers.map((answer) => {
     let id = null;
-    if (q.checked) {
-      if (q.correct === answer) {
+    if (receivedQuestion.checked) {
+      if (receivedQuestion.correct === answer) {
         id = "correct";
-      } else if (q.selected === answer) {
+      } else if (receivedQuestion.selected === answer) {
         id = "incorrect";
       } else {
         id = "not-selected";
@@ -27,7 +27,9 @@ const Question = ({ q, handleClickAnswer }) => {
         key={nanoid()}
         id={id}
         className={` border-2 rounded-lg p-2  ${
-          answer === q.selected ? "answer selected bg-red-700" : "answer"
+          answer === receivedQuestion.selected
+            ? "answer selected bg-red-700"
+            : "answer"
         }`}
         onClick={() => handleClick(answer)}
       >
@@ -38,7 +40,9 @@ const Question = ({ q, handleClickAnswer }) => {
 
   return (
     <div className="question-container pt-5">
-      <h3 className="question-title text-xl font-bold">{atob(q.question)}</h3>
+      <h3 className="question-title text-xl font-bold">
+        {atob(receivedQuestion.question)}
+      </h3>
       <div className=" space-x-2 py-5 ">{answersElement}</div>
       <div className="line"></div>
     </div>
